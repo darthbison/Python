@@ -3,7 +3,6 @@ from __future__ import division       #                           ''
 
 import time     # import the time library for the sleep function
 import brickpi3 # import the BrickPi3 drivers
-import sys      # import sys for sys.exit()
 import numpy as np
 
 class AutoClaw:
@@ -12,21 +11,17 @@ class AutoClaw:
         self.PORT_MOTOR_CLAW = self.BP.PORT_A
         self.threshold = 0
         self.hasItem = False
-        #self.runClaw()
+        
     
     def runClaw(self):
-        self.BP.offset_motor_encoder(PORT_MOTOR_CLAW, BP.get_motor_encoder(PORT_MOTOR_CLAW))
-        self.BP.set_sensor_type(BP.PORT_1, BP.SENSOR_TYPE.NXT_LIGHT_ON)
+        self.BP.offset_motor_encoder(self.PORT_MOTOR_CLAW, self.BP.get_motor_encoder(self.PORT_MOTOR_CLAW))
+        self.BP.set_sensor_type(self.BP.PORT_1, self.BP.SENSOR_TYPE.NXT_LIGHT_ON)
         while True:
             try:
-                    lightvalue = self.BP.get_sensor(BP.PORT_1)
+                    lightvalue = self.BP.get_sensor(self.BP.PORT_1)
 
                     if self.threshold == 0:
                         self.threshold = getLightAverage(lightvalue)
-
-                    # print("Threshold: " + str(threshold))
-                    # print("LV: " + str(lightvalue))
-
                     
                     if lightvalue >= self.threshold:
                         self.hasItem = False
@@ -34,7 +29,7 @@ class AutoClaw:
                     if self.hasItem == False:
                         if lightvalue < self.threshold:
                             self.BP.set_motor_power(self.PORT_MOTOR_CLAW , 25)
-                            time.sleep(2)
+                            time.sleep(2) #Hold item for two seconds
                             self.hasItem = True
                         elif lightvalue > self.threshold:
                             self.BP.set_motor_power(self.PORT_MOTOR_CLAW , -25)
@@ -54,38 +49,4 @@ class AutoClaw:
             else:  
                 lightValues.append(lightvalue)
                 count = count + 1
-
-
-# try:
-#         while True:
-#             try:
-                
-#                 lightvalue = BP.get_sensor(BP.PORT_1)
-
-#                 if threshold == 0:
-#                     threshold = getLightAverage(lightvalue)
-
-#                 # print("Threshold: " + str(threshold))
-#                 # print("LV: " + str(lightvalue))
-
-                
-#                 if lightvalue >= threshold:
-#                     hasItem = False
-
-#                 if hasItem == False:
-#                     if lightvalue < threshold:
-#                         BP.set_motor_power(PORT_MOTOR_CLAW , 25)
-#                         time.sleep(2)
-#                         hasItem = True
-#                     elif lightvalue > threshold:
-#                         BP.set_motor_power(PORT_MOTOR_CLAW , -25)
-                    
-#                 if hasItem & lightvalue < threshold:
-#                     BP.set_motor_power(PORT_MOTOR_CLAW , -25)
-
-#             except brickpi3.SensorError as error:
-#                 print(error)
-# except KeyboardInterrupt: # except the program gets interrupted by Ctrl+C on the keyboard.
-#         BP.reset_all()
-
-    
+  
