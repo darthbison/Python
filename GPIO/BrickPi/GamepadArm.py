@@ -1,11 +1,5 @@
-# Motor B controls Left-Right movement
-# Motor C controls the height of arm
-# Motor A controls the fingers
-
-
 import time,pygame,math,sys	
 import brickpi3 # import the BrickPi3 drivers
-
 
 pygame.init()
 
@@ -36,7 +30,7 @@ while True:
 
     # Get count of joysticks
     joystick_count = pygame.joystick.get_count()
-    #print(joystick_count)    
+        
     # For each joystick:
     for k in range(joystick_count):
         joystick = pygame.joystick.Joystick(k)
