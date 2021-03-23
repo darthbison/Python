@@ -1,12 +1,3 @@
-# Motor B controls Left-Right movement
-# Motor C controls the height of arm
-# Motor A controls the fingers
-
-# Direction keys - to move the arm
-# Space will open the claw
-# Z will close the claw
-
-
 from __future__ import print_function # use python 3 syntax but make it compatible with python 2
 from __future__ import division       #                           ''
 
@@ -22,8 +13,6 @@ BP = brickpi3.BrickPi3() # Create an instance of the BrickPi3 class. BP will be 
 PORT_MOTOR_LATERAL = BP.PORT_B
 PORT_MOTOR_VERTICAL  = BP.PORT_C
 
-
-
 stdscr = curses.initscr()	#initialize the curses object
 curses.cbreak()			#to get special key characters 
 stdscr.keypad(1)		#for getting values such as KEY_UP
@@ -35,7 +24,7 @@ def runArm():
     key = ''
     while key != ord('q'):		#press 'q' to quit from program
         
-        BP.reset_all()
+        #BP.reset_all()
     
         key = stdscr.getch()	#get a character from terminal
         stdscr.refresh()
@@ -57,5 +46,10 @@ def runArm():
 if __name__ == "__main__":
     ac = AutoClaw.AutoClaw()
     x = threading.Thread(target=runArm, args=())
-    #x.start()
-    curses.endwin()
+    y = threading.Thread(target=ac.runClaw, args=())
+    try:
+          x.start()
+          #y.start()
+    except KeyboardInterrupt: # except the program gets interrupted by Ctrl+C on the keyboard.
+          BP.reset_all()
+          curses.endwin()
