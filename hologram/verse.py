@@ -1,14 +1,3 @@
-#
-# example-cellular-send.py - Example of using a supported modem to send messages
-#                            to the Hologram Cloud.
-#
-# Author: Hologram <support@hologram.io>
-#
-# Copyright 2016 - Hologram (Konekt, Inc.)
-#
-# LICENSE: Distributed under the terms of the MIT License
-#
-
 import sys
 import urllib.request
 import xml.etree.ElementTree as ET
@@ -21,7 +10,6 @@ sys.path.append("../..")
 from Hologram.HologramCloud import HologramCloud
 
 if __name__ == "__main__":
-
 
     verseContent = ""
     with urllib.request.urlopen('https://www.biblegateway.com/usage/votd/rss/votd.rdf?31') as response:
