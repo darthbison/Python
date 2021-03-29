@@ -22,29 +22,29 @@ BP.offset_motor_encoder(PORT_MOTOR_VERTICAL, BP.get_motor_encoder(PORT_MOTOR_VER
 
 def runArm():
     key = ''
-    while key != ord('q'):		#press 'q' to quit from program
-        
-        #BP.reset_all()
-        
-    
+    while True:		#press 'q' to quit from program
+               
         key = stdscr.getch()	#get a character from terminal
         stdscr.refresh()
         
-            #change the motor speed based on key value
+        #change the motor speed based on key value
         if key == curses.KEY_LEFT : 
-            BP.set_motor_power(PORT_MOTOR_LATERAL, -45)
-            time.sleep(1)
-            BP.set_motor_power(PORT_MOTOR_LATERAL, 0)
+            setMotorPower(PORT_MOTOR_LATERAL, -45)
         elif key == curses.KEY_RIGHT : 
-            BP.set_motor_power(PORT_MOTOR_LATERAL , 45)
+            setMotorPower(PORT_MOTOR_LATERAL, 45)
         elif key == curses.KEY_UP :
-            BP.set_motor_power(PORT_MOTOR_VERTICAL , 45)
+            setMotorPower(PORT_MOTOR_VERTICAL , 45)
         elif key == curses.KEY_DOWN :
-            BP.set_motor_power(PORT_MOTOR_VERTICAL , -45)
+            setMotorPower(PORT_MOTOR_VERTICAL , -45)
     
         #After setting the motor speeds, send values to BrickPi
         time.sleep(.1)	#pause for 100 ms
     curses.endwin()
+
+def setMotorPower(motor, speed):
+    BP.set_motor_power(motor, speed)
+    time.sleep(1) #Hold for 1 second before shutting off the motor
+    BP.set_motor_power(motor, 0)
 
 if __name__ == "__main__":
     ac = AutoClaw.AutoClaw()
@@ -52,7 +52,7 @@ if __name__ == "__main__":
     y = threading.Thread(target=ac.runClaw, args=())
     try:
           x.start()
-          #y.start()
+          y.start()
     except KeyboardInterrupt: # except the program gets interrupted by Ctrl+C on the keyboard.
           BP.reset_all()
           curses.endwin()
