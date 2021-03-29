@@ -25,6 +25,7 @@ def runArm():
     while key != ord('q'):		#press 'q' to quit from program
         
         #BP.reset_all()
+        
     
         key = stdscr.getch()	#get a character from terminal
         stdscr.refresh()
@@ -32,6 +33,8 @@ def runArm():
             #change the motor speed based on key value
         if key == curses.KEY_LEFT : 
             BP.set_motor_power(PORT_MOTOR_LATERAL, -45)
+            time.sleep(1)
+            BP.set_motor_power(PORT_MOTOR_LATERAL, 0)
         elif key == curses.KEY_RIGHT : 
             BP.set_motor_power(PORT_MOTOR_LATERAL , 45)
         elif key == curses.KEY_UP :

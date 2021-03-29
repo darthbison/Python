@@ -21,7 +21,7 @@ class AutoClaw:
                     lightvalue = self.BP.get_sensor(self.BP.PORT_1)
 
                     if self.threshold == 0:
-                        self.threshold = getLightAverage(lightvalue)
+                        self.threshold = self.getLightAverage(lightvalue)
                     
                     if lightvalue >= self.threshold:
                         self.hasItem = False
@@ -40,7 +40,7 @@ class AutoClaw:
             except brickpi3.SensorError as error:
                     print(error)
 
-    def getLightAverage(lightvalue):
+    def getLightAverage(self, lightvalue):
         count = 0
         lightValues = []
         while count <= 10:
