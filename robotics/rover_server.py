@@ -25,8 +25,8 @@ class WSHandler(tornado.websocket.WebSocketHandler):
         return True
     def on_message(self, message):      # receives the data from the webpage and is stored in the variable message
         
-        accessToken = "bbe65318bea7853a02b194c6be9072e84be00cdd"
-        deviceID = "270036000d47343233323032"
+        accessToken = ""
+        deviceID = ""
         controlURL = "https://api.spark.io/v1/devices/" + deviceID + "/control"
         
         # prints the revived from the webpage 
