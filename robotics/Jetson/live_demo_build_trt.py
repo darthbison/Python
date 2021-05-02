@@ -1,44 +1,7 @@
 #!/usr/bin/env python
-# coding: utf-8
-
-# # Road Following - Build TensorRT model for live demo
-
-# In this notebook, we will optimize the model we trained using TensorRT.
-
-# ## Load the trained model
-
-# We will assume that you have already downloaded ``best_steering_model_xy.pth`` to work station as instructed in "train_model.ipynb" notebook. Now, you should upload model file to JetBot in to this notebook's directory. Once that's finished there should be a file named ``best_steering_model_xy.pth`` in this notebook's directory.
-
-# > Please make sure the file has uploaded fully before calling the next cell
-
-# Execute the code below to initialize the PyTorch model. This should look very familiar from the training notebook.
-
-# In[1]:
-
 
 import torchvision
 import torch
-
-model = torchvision.models.resnet18(pretrained=False)
-model.fc = torch.nn.Linear(512, 2)
-model = model.cuda().eval().half()
-
-
-# Next, load the trained weights from the ``best_steering_model_xy.pth`` file that you uploaded.
-
-# In[ ]:
-
-
-model.load_state_dict(torch.load('best_steering_model_xy.pth'))
-
-
-# Currently, the model weights are located on the CPU memory execute the code below to transfer to the GPU device.
-
-# In[1]:
-
-
-device = torch.device('cuda')
-
 
 # ## TensorRT
 
@@ -54,28 +17,26 @@ device = torch.device('cuda')
 # 
 # > This optimization process can take a couple minutes to complete.
 
-# In[ ]:
-
-
 from torch2trt import torch2trt
+
+model = torchvision.models.resnet18(pretrained=False)
+model.fc = torch.nn.Linear(512, 2)
+model = model.cuda().eval().half()
+
+
+model.load_state_dict(torch.load('best_steering_model_xy.pth'))
+
+
+device = torch.device('cuda')
+
 
 data = torch.zeros((1, 3, 224, 224)).cuda().half()
 
 model_trt = torch2trt(model, [data], fp16_mode=True)
 
 
-# Save the optimized model using the cell below
-
-# In[ ]:
-
-
 torch.save(model_trt.state_dict(), 'best_steering_model_xy_trt.pth')
 
-
-# ## Next
-# Open live_demo_trt.ipynb to move JetBot with the TensorRT optimized model.
-
-# In[ ]:
 
 
 

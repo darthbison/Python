@@ -1,12 +1,11 @@
 #!/usr/bin/env python
-# coding: utf-8
 
 # # Collision Avoidance - Train Model (ResNet18)
 # 
 # Welcome to this host side Jupyter Notebook!  This should look familiar if you ran through the notebooks that run on the robot.  In this notebook we'll train our image classifier to detect two classes
 # ``free`` and ``blocked``, which we'll use for avoiding collisions.  For this, we'll use a popular deep learning library *PyTorch*
 
-# In[ ]:
+
 
 
 import torch
@@ -24,7 +23,7 @@ import torchvision.transforms as transforms
 # 
 # You should then extract this dataset by calling the command below
 
-# In[ ]:
+
 
 
 get_ipython().system('unzip -q dataset.zip')
@@ -36,7 +35,6 @@ get_ipython().system('unzip -q dataset.zip')
 
 # Now we use the ``ImageFolder`` dataset class available with the ``torchvision.datasets`` package.  We attach transforms from the ``torchvision.transforms`` package to prepare the data for training.  
 
-# In[ ]:
 
 
 dataset = datasets.ImageFolder(
@@ -54,7 +52,6 @@ dataset = datasets.ImageFolder(
 
 # Next, we split the dataset into *training* and *test* sets.  The test set will be used to verify the accuracy of the model we train.
 
-# In[ ]:
 
 
 train_dataset, test_dataset = torch.utils.data.random_split(dataset, [len(dataset) - 50, 50])
@@ -64,7 +61,7 @@ train_dataset, test_dataset = torch.utils.data.random_split(dataset, [len(datase
 
 # We'll create two ``DataLoader`` instances, which provide utilities for shuffling data, producing *batches* of images, and loading the samples in parallel with multiple workers.
 
-# In[ ]:
+
 
 
 train_loader = torch.utils.data.DataLoader(
@@ -90,7 +87,6 @@ test_loader = torch.utils.data.DataLoader(
 # 
 # Important features that were learned in the original training of the pre-trained model are re-usable for the new task.  We'll use the ``resnet18`` model.
 
-# In[ ]:
 
 
 model = models.resnet18(pretrained=True)
@@ -99,7 +95,7 @@ model = models.resnet18(pretrained=True)
 # The ``resnet18`` model was originally trained for a dataset that had 1000 class labels, but our dataset only has two class labels!  We'll replace
 # the final layer with a new, untrained layer that has only two outputs.  
 
-# In[ ]:
+
 
 
 model.fc = torch.nn.Linear(512, 2)
@@ -107,7 +103,6 @@ model.fc = torch.nn.Linear(512, 2)
 
 # Finally, we transfer our model for execution on the GPU
 
-# In[ ]:
 
 
 device = torch.device('cuda')
@@ -120,7 +115,7 @@ model = model.to(device)
 # 
 # > An epoch is a full run through our data.
 
-# In[ ]:
+
 
 
 NUM_EPOCHS = 30
@@ -156,7 +151,7 @@ for epoch in range(NUM_EPOCHS):
 
 # Once that is finished, you should see a file ``best_model_resnet18.pth`` in the Jupyter Lab file browser.  Select ``Right click`` -> ``Download`` to download the model to your workstation
 
-# In[ ]:
+
 
 
 

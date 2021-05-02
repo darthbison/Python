@@ -7,7 +7,7 @@
 # 
 # We will be using PyTorch deep learning framework to train ResNet18 neural network architecture model for road follower application.
 
-# In[ ]:
+
 
 
 import torch
@@ -31,7 +31,7 @@ import numpy as np
 # 
 # You should then extract this dataset by calling the command below:
 
-# In[ ]:
+
 
 
 get_ipython().system('unzip -q road_following.zip')
@@ -48,7 +48,7 @@ get_ipython().system('unzip -q road_following.zip')
 # We hard coded some transformations (like color jitter) into our dataset.  We made random horizontal flips optional (in case you want to follow a non-symmetric path, like a road
 # where we need to 'stay right').  If it doesn't matter whether your robot follows some convention, you could enable flips to augment the dataset.
 
-# In[ ]:
+
 
 
 def get_x(path, width):
@@ -97,8 +97,6 @@ dataset = XYDataset('dataset_xy', random_hflips=False)
 # ### Split dataset into train and test sets
 # Once we read dataset, we will split data set in train and test sets. In this example we split train and test a 90%-10%. The test set will be used to verify the accuracy of the model we train.
 
-# In[ ]:
-
 
 test_percent = 0.1
 num_test = int(test_percent * len(dataset))
@@ -109,7 +107,7 @@ train_dataset, test_dataset = torch.utils.data.random_split(dataset, [len(datase
 # 
 # We use ``DataLoader`` class to load data in batches, shuffle data and allow using multi-subprocesses. In this example we use batch size of 64. Batch size will be based on memory available with your GPU and it can impact accuracy of the model.
 
-# In[ ]:
+
 
 
 train_loader = torch.utils.data.DataLoader(
@@ -138,8 +136,6 @@ test_loader = torch.utils.data.DataLoader(
 # 
 # More Details on Transfer Learning: https://www.youtube.com/watch?v=yofjFQddwHE 
 
-# In[ ]:
-
 
 model = models.resnet18(pretrained=True)
 
@@ -148,7 +144,7 @@ model = models.resnet18(pretrained=True)
 # 
 # Finally, we transfer our model for execution on the GPU
 
-# In[ ]:
+
 
 
 model.fc = torch.nn.Linear(512, 2)
@@ -160,7 +156,6 @@ model = model.to(device)
 # 
 # We train for 50 epochs and save best model if the loss is reduced. 
 
-# In[ ]:
 
 
 NUM_EPOCHS = 70

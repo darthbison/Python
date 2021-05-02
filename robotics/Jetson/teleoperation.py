@@ -18,7 +18,6 @@
 # 
 # Next, we'll create and display our controller using that index.
 
-# In[ ]:
 
 
 import ipywidgets.widgets as widgets
@@ -41,7 +40,6 @@ display(controller)
 # 
 # > WARNING: This next cell will move the robot if you touch the gamepad controller axes!
 
-# In[ ]:
 
 
 from jetbot import Robot
@@ -62,7 +60,6 @@ right_link = traitlets.dlink((controller.axes[3], 'value'), (robot.right_motor, 
 # 
 # > FYI: The height and width only effect the rendering on the browser side, not the native image resolution before network transport from robot to browser.
 
-# In[ ]:
 
 
 image = widgets.Image(format='jpeg', width=300, height=300)
@@ -78,7 +75,6 @@ display(image)
 # First, let's create the camera instance, we call the ``instance`` method which will create a new camera
 # if it hasn't been created yet.  If once already exists, this method will return the existing camera.
 
-# In[ ]:
 
 
 from jetbot import Camera
@@ -90,8 +86,6 @@ camera = Camera.instance()
 
 # Our camera class currently only produces values in BGR8 (blue, green, red, 8bit) format, while our image widget accepts values in compressed *JPEG*.
 # To connect the camera to the image we need to insert the ``bgr8_to_jpeg`` function as a transform in the link.  We do this below
-
-# In[ ]:
 
 
 from jetbot import bgr8_to_jpeg
@@ -107,7 +101,6 @@ camera_link = traitlets.dlink((camera, 'value'), (image, 'value'), transform=bgr
 # 
 # You can drive your robot around by looking through the video feed. But what if your robot disconnects from Wifi?  Well, the motors would keep moving and it would keep trying to stream video and motor commands.  Let's make it so that we stop the robot and unlink the camera and motors when a disconnect occurs.
 
-# In[ ]:
 
 
 from jetbot import Heartbeat
@@ -128,7 +121,6 @@ heartbeat.observe(handle_heartbeat_status, names='status')
 
 # If the robot disconnects from the internet you'll notice that it stops.  You can then re-connect the camera and motors by re-creating the links with the cell below
 
-# In[ ]:
 
 
 # only call this if your robot links were unlinked, otherwise we'll have redundant links which will double
@@ -143,7 +135,6 @@ camera_link = traitlets.dlink((camera, 'value'), (image, 'value'), transform=bgr
 # 
 # Now, we'd like to be able to save some images from our robot.  Let's make it so the right bumper (index 5) saves a snapshot of the current live image.  We'll save the images in the ``snapshots/`` directory, with a name that is guaranteed to be unique using the ``uuid`` python package.  We use the ``uuid1`` identifier, because this also encodes the date and MAC address which we might want to use later.
 
-# In[ ]:
 
 
 import uuid
@@ -174,7 +165,7 @@ display(controller)
 
 # Before closeing this notebook and shutdown the Python kernel for the notebook, we want to properly close the camera connection so that we can use the camera in other notebook.
 
-# In[ ]:
+
 
 
 camera.stop()

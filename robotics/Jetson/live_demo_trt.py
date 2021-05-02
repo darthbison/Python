@@ -1,25 +1,10 @@
 #!/usr/bin/env python
-# coding: utf-8
-
-# # Road Following - Live demo (TensorRT)
-
-# In this notebook, we will use model we trained to move JetBot smoothly on track. 
-
-# # TensorRT
-
-# In[1]:
-
 
 import torch
 device = torch.device('cuda')
 
 
 # Load the TRT optimized model by executing the cell below
-
-# In[2]:
-
-
-import torch
 from torch2trt import TRTModule
 
 model_trt = TRTModule()
@@ -34,8 +19,6 @@ model_trt.load_state_dict(torch.load('best_steering_model_xy_trt.pth'))
 # 2. Normalize using same parameters as we did during training (our camera provides values in [0, 255] range and training loaded images in [0, 1] range so we need to scale by 255.0
 # 3. Transfer the data from CPU memory to GPU memory
 # 4. Add a batch dimension
-
-# In[3]:
 
 
 import torchvision.transforms as transforms
@@ -58,8 +41,6 @@ def preprocess(image):
 # 
 # Now, let's start and display our camera. You should be pretty familiar with this by now. 
 
-# In[ ]:
-
 
 from IPython.display import display
 import ipywidgets
@@ -69,19 +50,11 @@ from jetbot import Camera, bgr8_to_jpeg
 camera = Camera()
 
 
-# In[ ]:
-
-
 image_widget = ipywidgets.Image()
 
 traitlets.dlink((camera, 'value'), (image_widget, 'value'), transform=bgr8_to_jpeg)
 
 display(image_widget)
-
-
-# We'll also create our robot instance which we'll need to drive the motors.
-
-# In[ ]:
 
 
 from jetbot import Robot
@@ -98,8 +71,6 @@ robot = Robot()
 # 
 # > Note: You should play around above mentioned sliders with lower speed to get smooth JetBot road following behavior.
 
-# In[ ]:
-
 
 speed_gain_slider = ipywidgets.FloatSlider(min=0.0, max=1.0, step=0.01, description='speed gain')
 steering_gain_slider = ipywidgets.FloatSlider(min=0.0, max=1.0, step=0.01, value=0.2, description='steering gain')
@@ -113,9 +84,6 @@ display(speed_gain_slider, steering_gain_slider, steering_dgain_slider, steering
 # 
 # The steering slider will display our estimated steering value.  Please remember, this value isn't the actual angle of the target, but simply a value that is
 # nearly proportional.  When the actual angle is ``0``, this will be zero, and it will increase / decrease with the actual angle.  
-
-# In[ ]:
-
 
 x_slider = ipywidgets.FloatSlider(min=-1.0, max=1.0, description='x')
 y_slider = ipywidgets.FloatSlider(min=0, max=1.0, orientation='vertical', description='y')
@@ -132,8 +100,6 @@ display(x_slider, steering_slider)
 # 2. Execute the neural network
 # 3. Compute the approximate steering value
 # 4. Control the motors using proportional / derivative control (PD)
-
-# In[ ]:
 
 
 angle = 0.0
@@ -169,9 +135,6 @@ execute({'new': camera.value})
 
 # >WARNING: This code will move the robot!! Please make sure your robot has clearance and it is on Lego or Track you have collected data on. The road follower should work, but the neural network is only as good as the data it's trained on!
 
-# In[ ]:
-
-
 camera.observe(execute, names='value')
 
 
@@ -180,9 +143,6 @@ camera.observe(execute, names='value')
 # You can now place JetBot on  Lego or Track you have collected data on and see whether it can follow track.
 # 
 # If you want to stop this behavior, you can unattach this callback by executing the code below.
-
-# In[ ]:
-
 
 import time
 

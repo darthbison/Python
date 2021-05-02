@@ -1,19 +1,4 @@
 #!/usr/bin/env python
-# coding: utf-8
-
-# # Road Following - Live demo
-
-# In this notebook, we will use model we trained to move jetBot smoothly on track. 
-
-# ### Load Trained Model
-
-# We will assume that you have already downloaded ``best_steering_model_xy.pth`` to work station as instructed in "train_model.ipynb" notebook. Now, you should upload model file to JetBot in to this notebook's directory. Once that's finished there should be a file named ``best_steering_model_xy.pth`` in this notebook's directory.
-
-# > Please make sure the file has uploaded fully before calling the next cell
-
-# Execute the code below to initialize the PyTorch model. This should look very familiar from the training notebook.
-
-# In[ ]:
 
 
 import torchvision
@@ -25,15 +10,12 @@ model.fc = torch.nn.Linear(512, 2)
 
 # Next, load the trained weights from the ``best_steering_model_xy.pth`` file that you uploaded.
 
-# In[ ]:
-
 
 model.load_state_dict(torch.load('best_steering_model_xy.pth'))
 
 
 # Currently, the model weights are located on the CPU memory execute the code below to transfer to the GPU device.
 
-# In[ ]:
 
 
 device = torch.device('cuda')
@@ -49,8 +31,6 @@ model = model.eval().half()
 # 2. Normalize using same parameters as we did during training (our camera provides values in [0, 255] range and training loaded images in [0, 1] range so we need to scale by 255.0
 # 3. Transfer the data from CPU memory to GPU memory
 # 4. Add a batch dimension
-
-# In[ ]:
 
 
 import torchvision.transforms as transforms
@@ -73,8 +53,6 @@ def preprocess(image):
 # 
 # Now, let's start and display our camera. You should be pretty familiar with this by now. 
 
-# In[ ]:
-
 
 from IPython.display import display
 import ipywidgets
@@ -92,8 +70,6 @@ display(image_widget)
 
 # We'll also create our robot instance which we'll need to drive the motors.
 
-# In[ ]:
-
 
 from jetbot import Robot
 
@@ -109,8 +85,6 @@ robot = Robot()
 # 
 # > Note: You should play around above mentioned sliders with lower speed to get smooth JetBot road following behavior.
 
-# In[ ]:
-
 
 speed_gain_slider = ipywidgets.FloatSlider(min=0.0, max=1.0, step=0.01, description='speed gain')
 steering_gain_slider = ipywidgets.FloatSlider(min=0.0, max=1.0, step=0.01, value=0.2, description='steering gain')
@@ -124,8 +98,6 @@ display(speed_gain_slider, steering_gain_slider, steering_dgain_slider, steering
 # 
 # The steering slider will display our estimated steering value.  Please remember, this value isn't the actual angle of the target, but simply a value that is
 # nearly proportional.  When the actual angle is ``0``, this will be zero, and it will increase / decrease with the actual angle.  
-
-# In[ ]:
 
 
 x_slider = ipywidgets.FloatSlider(min=-1.0, max=1.0, description='x')
@@ -143,8 +115,6 @@ display(x_slider, steering_slider)
 # 2. Execute the neural network
 # 3. Compute the approximate steering value
 # 4. Control the motors using proportional / derivative control (PD)
-
-# In[ ]:
 
 
 angle = 0.0
@@ -180,7 +150,7 @@ execute({'new': camera.value})
 
 # >WARNING: This code will move the robot!! Please make sure your robot has clearance and it is on Lego or Track you have collected data on. The road follower should work, but the neural network is only as good as the data it's trained on!
 
-# In[ ]:
+
 
 
 camera.observe(execute, names='value')
@@ -192,7 +162,6 @@ camera.observe(execute, names='value')
 # 
 # If you want to stop this behavior, you can unattach this callback by executing the code below.
 
-# In[ ]:
 
 
 import time
@@ -206,7 +175,6 @@ robot.stop()
 
 # Again, let's close the camera conneciton properly so that we can use the camera in other notebooks.
 
-# In[ ]:
 
 
 camera.stop()

@@ -14,8 +14,6 @@
 # 
 # Execute the code below to initialize the PyTorch model.  This should look very familiar from the training notebook.
 
-# In[ ]:
-
 
 import torch
 import torchvision
@@ -24,17 +22,9 @@ model = torchvision.models.resnet18(pretrained=False)
 model.fc = torch.nn.Linear(512, 2)
 
 
-# Next, load the trained weights from the ``best_model_resnet18.pth`` file that you uploaded
-
-# In[ ]:
-
 
 model.load_state_dict(torch.load('best_model_resnet18.pth'))
 
-
-# Currently, the model weights are located on the CPU memory execute the code below to transfer to the GPU device.
-
-# In[ ]:
 
 
 device = torch.device('cuda')
@@ -51,8 +41,6 @@ model = model.eval().half()
 # 2. Normalize using same parameters as we did during training (our camera provides values in [0, 255] range and training loaded images in [0, 1] range so we need to scale by 255.0
 # 3. Transfer the data from CPU memory to GPU memory
 # 4. Add a batch dimension
-
-# In[ ]:
 
 
 import torchvision.transforms as transforms
@@ -78,8 +66,6 @@ def preprocess(image):
 # Now, let's start and display our camera.  You should be pretty familiar with this by now.  We'll also create a slider that will display the
 # probability that the robot is blocked.  We'll also display a slider that allows us to control the robot's base speed.
 
-# In[ ]:
-
 
 import traitlets
 from IPython.display import display
@@ -98,7 +84,6 @@ display(widgets.VBox([widgets.HBox([image, blocked_slider]), speed_slider]))
 
 # We'll also create our robot instance which we'll need to drive the motors.
 
-# In[ ]:
 
 
 from jetbot import Robot
@@ -157,10 +142,6 @@ camera.observe(update, names='value')  # this attaches the 'update' function to 
 # 
 # If you want to stop this behavior, you can unattach this callback by executing the code below.
 
-# In[ ]:
-
-
-import time
 
 camera.unobserve(update, names='value')
 
@@ -169,33 +150,3 @@ time.sleep(0.1)  # add a small sleep to make sure frames have finished processin
 robot.stop()
 
 
-# Perhaps you want the robot to run without streaming video to the browser.  You can unlink the camera as below.
-
-# In[ ]:
-
-
-camera_link.unlink()  # don't stream to browser (will still run camera)
-
-
-# To continue streaming call the following.
-
-# In[ ]:
-
-
-camera_link.link()  # stream to browser (wont run camera)
-
-
-# Again, let's close the camera conneciton properly so that we can use the camera in other notebooks.
-
-# In[ ]:
-
-
-camera.stop()
-
-
-# ### Conclusion
-# 
-# That's it for this live demo!  Hopefully you had some fun and your robot avoided collisions intelligently! 
-# 
-# If your robot wasn't avoiding collisions very well, try to spot where it fails.  The beauty is that we can collect more data for these failure scenarios
-# and the robot should get even better :)
