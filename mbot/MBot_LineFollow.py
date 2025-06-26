@@ -12,9 +12,11 @@ right_power = 0
 @event.start
 def on_start():
     global base_power, kp, left_power, right_power
-    cyberpi.console.println("A：stop line-following")
-    cyberpi.console.println("B：start line-following")
-    cyberpi.console.println("Press joystick：check the color recognition results")
+    cyberpi.audio.play('hi')
+    cyberpi.console.println("Line Follow")
+    cyberpi.console.println("A：stop")
+    cyberpi.console.println("B：start")
+    cyberpi.console.println("Joystick -> color results")
 
 @event.is_press('a')
 def is_btn_press():
@@ -26,7 +28,7 @@ def is_btn_press():
 def is_btn_press1():
     global base_power, kp, left_power, right_power
     cyberpi.stop_other()
-    base_power = 55
+    base_power = -55
     kp = 0.8
     while True:
       left_power = -1 * ((base_power + kp * mbuild.quad_rgb_sensor.get_offset_track(1)))
