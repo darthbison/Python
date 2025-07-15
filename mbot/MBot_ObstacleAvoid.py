@@ -6,7 +6,7 @@ import time
 
 @event.start
 def on_start():
-    cyberpi.console.set_font(12)
+    cyberpi.console.set_font(10)
     cyberpi.audio.play('hi')
     cyberpi.console.println("Press “B” to start obstacle avoidance")
     cyberpi.console.println("Press “A” to restart")
@@ -16,7 +16,7 @@ def on_start():
 
     while True:
       if mbuild.ultrasonic2.get(1) > 8:
-        mbot2.forward(-100)
+        mbot2.forward(-75)
 
       else:
         # A randomness is designed to reduce the chance of the car getting stuck at a certain Angle.

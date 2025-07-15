@@ -28,7 +28,7 @@ def is_btn_press():
 def is_btn_press1():
     global base_power, kp, left_power, right_power
     cyberpi.stop_other()
-    base_power = -55
+    base_power = -30
     kp = 0.8
     while True:
       left_power = -1 * ((base_power + kp * mbuild.quad_rgb_sensor.get_offset_track(1)))
